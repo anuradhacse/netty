@@ -285,6 +285,7 @@
     <module>all</module>
     <module>bom</module>
     <module>tarball</module>
+    <module>codec-quic</module>
   </modules>
 
   <dependencyManagement>
