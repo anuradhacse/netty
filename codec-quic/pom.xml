@@ -2,15 +2,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>netty-parent</artifactId>
-        <groupId>io.netty</groupId>
-        <version>4.1.10.Final-SNAPSHOT</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>netty-codec-quic</artifactId>
-    <name>Netty/Codec/QUIC</name>
+  <parent>
+    <artifactId>netty-parent</artifactId>
+    <groupId>io.netty</groupId>
+    <version>4.1.10.Final-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>netty-codec-quic</artifactId>
+  <name>Netty/Codec/QUIC</name>
+  <dependencies>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-common</artifactId>
+      <version>4.1.10.Final-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec</artifactId>
+      <version>4.1.10.Final-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
 
 </project>
