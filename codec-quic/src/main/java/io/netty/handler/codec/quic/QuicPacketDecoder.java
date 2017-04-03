@@ -158,7 +158,8 @@ public class QuicPacketDecoder extends MessageToMessageDecoder<DatagramPacket> {
 
         //diversification nonce
         if ((publicFlagByte & 0x04) > 0) {
-
+            //sometimes packet doesn't contain a diversification nonce although public flag indicate it
+            //// TODO: 4/3/17  
         }
 
         //parse packet number
