@@ -34,11 +34,13 @@ public final class QuicUtils {
 
     /**
      * Utility method to convert 6 byte packet number to an int
-     * note : receiving bytes are in little endian order
-     * @param byteBuf byte
-     * @return
+     * note : receiving bytes are in little endian order.
+     * first byte is the least significant byte
+     * @param byteBuf ByteBuf containing packet number bytes
+     * @return packetNumber
      */
     public static long byteBufToInt(ByteBuf byteBuf){
+        byteBuf.capacity();
         byte byte1 = byteBuf.readByte();
         byte byte2 = byteBuf.readByte();
         byte byte3 = byteBuf.readByte();
@@ -46,13 +48,14 @@ public final class QuicUtils {
         byte byte5 = byteBuf.readByte();
         byte byte6 = byteBuf.readByte();
 
-        // TODO: 3/29/17 correct this 
-        return byte1 >> 48 | (byte2 & 0xff) >> 40 | (byte3 & 0xff) >> 32 |
-               (byte4 & 0xff) >> 24 | (byte6 & 0xff) >> 8 ;
+        long packetNumber =   ((long) byte1 & 0xffL) << (8 * 0)
+                            + ((long) byte2 & 0xffL) << (8 * 1)
+                            + ((long) byte3 & 0xffL) << (8 * 2)
+                            + ((long) byte4 & 0xffL) << (8 * 3)
+                            + ((long) byte5 & 0xffL) << (8 * 4)
+                            + ((long) byte6 & 0xffL) << (8 * 5);
+
+        return packetNumber;
     }
-
-
-
-
 
 }

@@ -132,22 +132,21 @@ public class QuicPacketDecoder extends MessageToMessageDecoder<DatagramPacket> {
                 } else {
                     // decode version negotiation packet
                     // contain 4 byte versions server support
-                    if(quicPacketData.capacity() % 4 == 0){
+                    if (quicPacketData.capacity() % 4 == 0) {
 
-                        for(int i=0; i< quicPacketData.capacity()/4; ++i){
+                        for (int i = 0; i < quicPacketData.capacity() / 4; ++i) {
                             int versionTag = (int) quicPacketData.readUnsignedIntLE();
                             int versionNumber = QuicVersion.versionTagToVersionNumber(versionTag);
                             //if the version is not supported. simply add it as
                             //unsupported version
-                            if(!QuicVersion.isSupportedVersion(versionNumber)){
+                            if (!QuicVersion.isSupportedVersion(versionNumber)) {
                                 versionNumber = QuicVersion.QUIC_VERSION_UNSUPPORTED;
                                 publicPacketHeader.setSupportedVersions(versionNumber);
                             }
                             publicPacketHeader.setSupportedVersions(versionNumber);
 
                         }
-                    }
-                    else{
+                    } else {
                         throw new QuicException(QuicError.QUIC_INVALID_VERSION_NEGOTIATION_PACKET,
                                                 "Versions should be indicated 4 bytes each");
                     }
@@ -163,24 +162,21 @@ public class QuicPacketDecoder extends MessageToMessageDecoder<DatagramPacket> {
         }
 
         //parse packet number
-        if(hasPacketNumber(publicPacketHeader)){
-            if(packetNumberLength == PACKET_NUMBER_LENGTH_1BYTE){
+        if (hasPacketNumber(publicPacketHeader)) {
+            if (packetNumberLength == PACKET_NUMBER_LENGTH_1BYTE) {
                 int packetNumber = quicPacketData.readByte();
-            }
-            else if(packetNumberLength == PACKET_NUMBER_LENGTH_2BYTES){
+            } else if (packetNumberLength == PACKET_NUMBER_LENGTH_2BYTES) {
                 int packetNumber = quicPacketData.readShortLE();
-            }
-            else if(packetNumberLength == PACKET_NUMBER_LENGTH_4BYTES){
+            } else if (packetNumberLength == PACKET_NUMBER_LENGTH_4BYTES) {
                 int packetNumber = quicPacketData.readMediumLE();
-            }
-            else if(packetNumberLength == PACKET_NUMBER_LENGTH_6BYTES){
-                long packetNumber = QuicUtils.byteBufToInt(quicPacketData);
-            }
-            else{
+            } else if (packetNumberLength == PACKET_NUMBER_LENGTH_6BYTES) {
+                //utility method for reading 6 bytes as a long
+                ByteBuf packetNumberBytes = quicPacketData.readBytes(packetNumberLength);
+                long packetNumber = QuicUtils.byteBufToInt(packetNumberBytes);
+            } else {
                 throw new QuicException(QuicError.QUIC_INVALID_PACKET_HEADER,
                                         "Invalid packet number size");
             }
-            ByteBuf packetNumberBytes = quicPacketData.readBytes(packetNumberLength);
         }
 
     }
@@ -204,5 +200,5 @@ public class QuicPacketDecoder extends MessageToMessageDecoder<DatagramPacket> {
         return true;
     }
 
-
+//// TODO: 4/3/17 test cases for the above methods
 }
